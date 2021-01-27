@@ -7,14 +7,15 @@ const App: React.FC = () => {
   return (
     <BrowserRouter>
       <div className="flex flex-col">
-        <Header />
-        <aside>nav menu</aside>
-        <main className="w-full overflow-hidden min-h-screen bg-purple-100">
-          <p>body</p>
+        <main className="flex flex-col min-h-screen bg-purple-100">
+          <Header />
+          <div className="flex flex-col flex-1">
+            <p>body</p>
+          </div>
+          <footer className="flex flex-col w-full overflow-hidden bg-blue-600 px-2 py-2 text-gray-300 ">
+            <p>Footer</p>
+          </footer>
         </main>
-        <footer className="w-full overflow-hidden bg-blue-600 px-2 py-2">
-          <p>Footer</p>
-        </footer>
       </div>
     </BrowserRouter>
   );
