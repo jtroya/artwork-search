@@ -1,10 +1,23 @@
 import React from 'react';
 
 import { MenuIcon, CloseIcon } from '../icons';
+import { Navbar, NavItemProps } from '../Navbar';
 
 export const Header: React.FC = () => {
   const [isClosed, setClosed] = React.useState(true);
   const handleClose = () => setClosed(!isClosed);
+  const navbarItems: NavItemProps[] = [
+    {
+      id: 'about',
+      name: 'About',
+      link: '#',
+    },
+    {
+      id: 'login',
+      name: 'Login',
+      link: '#',
+    },
+  ];
 
   return (
     <div className="">
@@ -33,20 +46,7 @@ export const Header: React.FC = () => {
               'md:flex flex-grow items-center' + (isClosed ? ' hidden' : 'flex')
             }
           >
-            <nav className="md:ml-auto md:pr-2 lg:ml-auto">
-              <ul className="flex flex-col md:flex-row pl-2 list-none">
-                <li>
-                  <a
-                    className="py-2 px-2 flex items-center hover:opacity-75"
-                    href="#"
-                  >
-                    <span className="text-xs uppercase font-bold text-white">
-                      About
-                    </span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
+            <Navbar items={navbarItems} />
           </div>
         </div>
       </header>
