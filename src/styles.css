@@ -32069,6 +32069,19 @@ video {
   animation: bounce 1s infinite;
 }
 
+@font-face {
+  font-family: 'Noto Sans';
+
+  src: local('Noto Sans'), url(./fonts/NotoSans-Regular.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Merriweather';
+
+  src: local('Merriweather-Regular'),
+    url(./fonts/Merriweather-Regular.ttf) format('truetype');
+}
+
 @media (min-width: 640px) {
   .sm\:container {
     width: 100%;
