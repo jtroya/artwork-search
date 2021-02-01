@@ -1,3 +1,14 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+@font-face {
+  font-family: 'Noto Sans';
+  src: local('Noto Sans'), url(./fonts/NotoSans-Regular.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Merriweather';
+  src: local('Merriweather-Regular'),
+    url(./fonts/Merriweather-Regular.ttf) format('truetype');
+}
