@@ -22,7 +22,7 @@ export const Header: React.FC = () => {
 
   return (
     <div className="">
-      <header className="flex bg-blue-600">
+      <header className="flex bg-blue-200">
         <div className="w-full flex flex-wrap items-center justify-between">
           <div className="w-full pl-4 flex justify-between md:w-auto md:static md:block md:justify-start">
             <NavLink
@@ -32,7 +32,7 @@ export const Header: React.FC = () => {
               <span className="text-white text-m pt-1">Artwork</span>
             </NavLink>
             <button
-              className="w-6 p-1 text-gray-100 cursor-pointer leading-none focus:text-white focus:outline-none block md:hidden"
+              className="w-7 p-0 mr-3 text-blue-100 cursor-pointer leading-none focus:outline-none block md:hidden"
               aria-label="Close menu"
               type="button"
               title="Close menu"

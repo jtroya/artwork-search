@@ -21,9 +21,9 @@ export const Navbar: React.FC<NavbarProps> = ({
       <nav className="md:ml-auto md:pr-2 lg:ml-auto">
         <ul className="flex flex-col md:flex-row sm:pl-0 md:pl-2 list-none">
           {items.map((opt: NavItemProps) => (
-            <li key={opt.id} className="py-2 sm:px-2 md:px-2">
+            <li key={opt.id} className="ml-2 p-2 md:ml-0">
               <NavLink
-                className="flex items-center hover:opacity-75 sm:ml-2 md:ml-0"
+                className="flex items-center hover:opacity-75"
                 to={opt.link}
                 onClick={handleClick}
               >
