@@ -47,7 +47,7 @@ export const Header: React.FC = () => {
               'md:flex flex-grow items-center' + (isClosed ? ' hidden' : 'flex')
             }
           >
-            <Navbar items={navbarItems} />
+            <Navbar items={navbarItems} handleClick={handleClose} />
           </div>
         </div>
       </header>
