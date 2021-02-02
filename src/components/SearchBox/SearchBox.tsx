@@ -1,21 +1,22 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { SearchIcon } from '../icons';
+import { getKeyword, updateKeyword } from '../../store/search';
 
 interface SearchBoxProps {
-  term: string;
   handleSubmit: (keyword: string) => void;
 }
 
 export const SearchBox: React.FC<SearchBoxProps> = ({
-  term,
   handleSubmit,
 }: SearchBoxProps) => {
-  const [keyword, setKeyword] = React.useState(term);
+  const keyword = useSelector(getKeyword);
+  const dispatch = useDispatch();
   const isDisable = keyword.trim() === '' || keyword.length < 3;
 
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setKeyword(event.target.value);
+    dispatch(updateKeyword(event.target.value));
   };
 
   const handleSearch = (event: React.FormEvent<HTMLFormElement>): void => {
