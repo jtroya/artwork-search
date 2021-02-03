@@ -12,7 +12,7 @@ const App: React.FC = () => {
           <Header />
           <div className="block sm:flex sm:justify-between p-4">
             <div></div>
-            <SearchBox handleSubmit={(t: string) => console.info(t)} />
+            <SearchBox />
           </div>
           <div className="flex flex-col flex-1">
             <Route exact path="/" component={() => <h2>home</h2>} />

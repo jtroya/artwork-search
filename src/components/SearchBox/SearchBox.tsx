@@ -2,15 +2,9 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { SearchIcon } from '../icons';
-import { getKeyword, updateKeyword } from '../../store/search';
+import { getKeyword, updateKeyword, searchKeyword } from '../../store/search';
 
-interface SearchBoxProps {
-  handleSubmit: (keyword: string) => void;
-}
-
-export const SearchBox: React.FC<SearchBoxProps> = ({
-  handleSubmit,
-}: SearchBoxProps) => {
+export const SearchBox: React.FC = () => {
   const keyword = useSelector(getKeyword);
   const dispatch = useDispatch();
   const isDisable = keyword.trim() === '' || keyword.length < 3;
@@ -22,7 +16,7 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
   const handleSearch = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
     if (keyword !== '' && keyword.length >= 3) {
-      handleSubmit(keyword);
+      dispatch(searchKeyword(keyword));
     }
   };
 
