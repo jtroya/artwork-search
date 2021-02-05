@@ -15,7 +15,7 @@ export interface SearchAction {
   payload: string;
 }
 export interface SearchKeywordAction {
-  type: typeof SEARCH_KEYWORD | typeof SEARCH_NO_RESULTS;
+  type: typeof SEARCH_KEYWORD | typeof SEARCH_NO_RESULTS | typeof SEARCH_ERROR;
   payload: CollectionResponseProps;
 }
 
@@ -33,6 +33,7 @@ export const initialState: SearchState = {
 export const UPDATE_KEYWORD = 'search/keywordUpdated';
 export const SEARCH_KEYWORD = 'search/keywordSearch';
 export const SEARCH_NO_RESULTS = 'search/noResults';
+export const SEARCH_ERROR = 'search/error';
 
 // reducers
 export function searchReducer(
@@ -51,6 +52,11 @@ export function searchReducer(
         results: action.payload,
       };
     case SEARCH_NO_RESULTS:
+      return {
+        ...state,
+        results: action.payload,
+      };
+    case SEARCH_ERROR:
       return {
         ...state,
         results: action.payload,
@@ -74,12 +80,20 @@ export const updateKeyword = (keyword: string): SearchAction => ({
 export const searchKeyword = (
   keyword: string,
 ): ThunkAction<void, RootState, unknown, Action<string>> => async dispatch => {
-  const response = await getCollection(keyword);
-  const { count } = response;
-  count == 0
-    ? dispatch({
-        type: SEARCH_NO_RESULTS,
-        payload: { ...initialState, keyword },
-      })
-    : dispatch({ type: SEARCH_KEYWORD, payload: response });
+  try {
+    const response = await getCollection(keyword);
+    const { count } = response;
+    count == 0
+      ? dispatch({
+          type: SEARCH_NO_RESULTS,
+          payload: { ...initialState, keyword },
+        })
+      : dispatch({ type: SEARCH_KEYWORD, payload: response });
+  } catch (error) {
+    console.error('Error searching...', error);
+    dispatch({
+      type: SEARCH_ERROR,
+      payload: { ...initialState, keyword },
+    });
+  }
 };
