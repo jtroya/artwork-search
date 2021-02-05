@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 
 import { Header } from './Header';
+import { SearchBox } from './SearchBox';
 
 const App: React.FC = () => {
   return (
@@ -9,6 +10,10 @@ const App: React.FC = () => {
       <div className="flex flex-col">
         <main className="flex flex-col min-h-screen bg-gray-100">
           <Header />
+          <div className="block sm:flex sm:justify-between p-4">
+            <div></div>
+            <SearchBox />
+          </div>
           <div className="flex flex-col flex-1">
             <Route exact path="/" component={() => <h2>home</h2>} />
             <Route path="/about" component={() => <h2>About</h2>} />
