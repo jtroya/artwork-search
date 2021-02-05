@@ -15,7 +15,7 @@ export interface SearchAction {
   payload: string;
 }
 export interface SearchKeywordAction {
-  type: typeof SEARCH_KEYWORD;
+  type: typeof SEARCH_KEYWORD | typeof SEARCH_NO_RESULTS;
   payload: CollectionResponseProps;
 }
 
@@ -50,6 +50,11 @@ export function searchReducer(
         ...state,
         results: action.payload,
       };
+    case SEARCH_NO_RESULTS:
+      return {
+        ...state,
+        results: action.payload,
+      };
     default:
       return state;
   }
@@ -69,7 +74,12 @@ export const updateKeyword = (keyword: string): SearchAction => ({
 export const searchKeyword = (
   keyword: string,
 ): ThunkAction<void, RootState, unknown, Action<string>> => async dispatch => {
-  dispatch({ type: UPDATE_KEYWORD, payload: keyword });
   const response = await getCollection(keyword);
-  dispatch({ type: SEARCH_KEYWORD, payload: response });
+  const { count } = response;
+  count == 0
+    ? dispatch({
+        type: SEARCH_NO_RESULTS,
+        payload: { ...initialState, keyword },
+      })
+    : dispatch({ type: SEARCH_KEYWORD, payload: response });
 };
