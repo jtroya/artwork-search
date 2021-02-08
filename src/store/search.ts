@@ -68,6 +68,8 @@ export function searchReducer(
 
 // selectors
 export const getKeyword = (state: RootState): string => state.search.keyword;
+export const getTotalCount = (state: RootState): number =>
+  state.search.results.count;
 export const getResults = (state: RootState): CollectionResponseProps =>
   state.search.results;
 
