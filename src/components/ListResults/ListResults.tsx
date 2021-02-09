@@ -3,8 +3,19 @@ import { useSelector } from 'react-redux';
 
 import { getResults } from '../../store/search';
 import { Table } from '../Table';
+import { GridImageList } from '../GridImageList';
 
-export const ListResults: React.FC = () => {
+export enum ViewStyles {
+  Table,
+  Grid,
+}
+interface ListResultsProps {
+  viewStyle?: ViewStyles;
+}
+
+export const ListResults: React.FC<ListResultsProps> = ({
+  viewStyle = ViewStyles.Grid,
+}: ListResultsProps) => {
   const TITLE = 'Artwork';
   const HEADER_TITLES = [
     { id: 1, name: 'Title' },
@@ -15,8 +26,11 @@ export const ListResults: React.FC = () => {
 
   return (
     <div className="w-full pb-4 sm:px-4">
-      {results.count > 0 && (
+      {viewStyle === ViewStyles.Table && results.count > 0 && (
         <Table title={TITLE} headers={HEADER_TITLES} data={results} />
+      )}
+      {viewStyle === ViewStyles.Grid && results.count > 0 && (
+        <GridImageList title={TITLE} headers={HEADER_TITLES} data={results} />
       )}
     </div>
   );

@@ -19,10 +19,13 @@ module.exports = {
           200: '#f4f7fb',
         },
       },
+      spacing: {
+        '2/3': '66.666667%',
+      },
     },
   },
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/line-clamp')],
 };
