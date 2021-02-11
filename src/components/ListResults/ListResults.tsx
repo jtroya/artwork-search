@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { getResults } from '../../store/search';
+import { getLoading, getResults } from '../../store/search';
 import { Table } from '../Table';
 import { GridImageList } from '../GridImageList';
 
@@ -23,14 +23,20 @@ export const ListResults: React.FC<ListResultsProps> = ({
     { id: 3, name: 'Description' },
   ];
   const results = useSelector(getResults);
+  const isLoading = useSelector(getLoading);
 
   return (
     <div className="w-full pb-4 sm:px-4">
       {viewStyle === ViewStyles.Table && results.count > 0 && (
         <Table title={TITLE} headers={HEADER_TITLES} data={results} />
       )}
-      {viewStyle === ViewStyles.Grid && results.count > 0 && (
-        <GridImageList title={TITLE} headers={HEADER_TITLES} data={results} />
+      {viewStyle === ViewStyles.Grid && (
+        <GridImageList
+          title={TITLE}
+          headers={HEADER_TITLES}
+          data={results}
+          loading={isLoading}
+        />
       )}
     </div>
   );
