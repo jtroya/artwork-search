@@ -71,7 +71,7 @@ export function searchReducer(
     case SEARCH_KEYWORD_SUCCESSFUL:
       return {
         ...state,
-        results: action.payload,
+        results: { ...action.payload },
         noResults: false,
       };
     case SEARCH_NO_RESULTS:
@@ -97,6 +97,8 @@ export const getTotalCount = (state: RootState): number =>
 export const getResults = (state: RootState): CollectionResponseProps =>
   state.search.results;
 export const getLoading = (state: RootState): boolean => state.search.loading;
+export const getNoResults = (state: RootState): boolean =>
+  state.search.noResults;
 
 // action creators
 export const updateKeyword = (keyword: string): SearchAction => ({
