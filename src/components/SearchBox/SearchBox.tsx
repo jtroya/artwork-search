@@ -2,26 +2,22 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { SearchIcon, Spinner } from '../icons';
-import {
-  getKeyword,
-  getLoading,
-  updateKeyword,
-  searchKeyword,
-} from '../../store/search';
+import { getLoading, updateKeyword, searchKeyword } from '../../store/search';
 
 export const SearchBox: React.FC = () => {
-  const keyword = useSelector(getKeyword);
+  const [keyword, setKeyword] = React.useState('');
   const showLoader = useSelector(getLoading);
   const dispatch = useDispatch();
   const isDisable = keyword.trim() === '' || keyword.length < 3;
 
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    dispatch(updateKeyword(event.target.value));
+    setKeyword(event.target.value);
   };
 
   const handleSearch = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
     if (keyword !== '' && keyword.length >= 3) {
+      dispatch(updateKeyword(keyword));
       dispatch(searchKeyword(keyword));
     }
   };
