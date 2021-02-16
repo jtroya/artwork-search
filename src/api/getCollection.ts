@@ -21,12 +21,12 @@ export interface CollectionResponseProps {
 
 export const getCollection = (
   search: string,
+  page = 1,
 ): Promise<CollectionResponseProps> => {
   const RESULTS_PER_PAGE = process.env.REACT_APP_RESULTS_PER_PAGE;
   const URL = process.env.REACT_APP_URL;
   const API_KEY = process.env.REACT_APP_API_KEY;
-  const CURRENT_PAGE = 1;
-  const endPoint = `${URL}/collection?key=${API_KEY}&q=${search}&format=json&ps=${RESULTS_PER_PAGE}&p=${CURRENT_PAGE}`;
+  const endPoint = `${URL}/collection?key=${API_KEY}&q=${search}&format=json&ps=${RESULTS_PER_PAGE}&p=${page}`;
 
   return api(endPoint)
     .then(res => {

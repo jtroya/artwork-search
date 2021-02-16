@@ -9,6 +9,7 @@ export interface SearchState {
   results: CollectionResponseProps;
   noResults: boolean;
   loading: boolean;
+  currentPage: number;
 }
 
 // actions
@@ -27,13 +28,19 @@ export interface SearchKeywordAction {
     | typeof SEARCH_KEYWORD_SUCCESSFUL
     | typeof SEARCH_NO_RESULTS
     | typeof SEARCH_ERROR;
-  payload: CollectionResponseProps;
+  payload: { results: CollectionResponseProps; currentPage: number };
+}
+
+export interface SearchMoreResultsAction {
+  type: typeof SEARCH_MORE_RESULTS_SUCCESSFUL;
+  payload: { results: CollectionResponseProps; currentPage: number };
 }
 
 export type SearchActionTypes =
   | SearchAction
   | SearchKeywordAction
-  | SearchShowLoadingAction;
+  | SearchShowLoadingAction
+  | SearchMoreResultsAction;
 
 export const initialState: SearchState = {
   keyword: '',
@@ -43,6 +50,7 @@ export const initialState: SearchState = {
   },
   noResults: false,
   loading: false,
+  currentPage: 0,
 };
 
 // action types
@@ -51,6 +59,7 @@ export const SEARCH_KEYWORD_SUCCESSFUL = 'search/keywordSearchSuccessful';
 export const SEARCH_KEYWORD = 'search/keywordSearch';
 export const SEARCH_NO_RESULTS = 'search/noResults';
 export const SEARCH_ERROR = 'search/error';
+export const SEARCH_MORE_RESULTS_SUCCESSFUL = 'search/getMoreResultsSuccessful';
 
 // reducers
 export function searchReducer(
@@ -71,19 +80,35 @@ export function searchReducer(
     case SEARCH_KEYWORD_SUCCESSFUL:
       return {
         ...state,
-        results: { ...action.payload },
+        results: { ...action.payload.results },
+        currentPage: 1,
+        noResults: false,
+      };
+    case SEARCH_MORE_RESULTS_SUCCESSFUL:
+      return {
+        ...state,
+        results: {
+          ...action.payload.results,
+          artObjects: [
+            ...state.results.artObjects,
+            ...action.payload.results.artObjects,
+          ],
+        },
+        currentPage: action.payload.currentPage,
         noResults: false,
       };
     case SEARCH_NO_RESULTS:
       return {
         ...state,
-        results: action.payload,
+        results: { ...action.payload.results },
+        currentPage: 0,
         noResults: true,
       };
     case SEARCH_ERROR:
       return {
         ...state,
-        results: action.payload,
+        results: { ...action.payload.results },
+        currentPage: 0,
       };
     default:
       return state;
@@ -99,6 +124,8 @@ export const getResults = (state: RootState): CollectionResponseProps =>
 export const getLoading = (state: RootState): boolean => state.search.loading;
 export const getNoResults = (state: RootState): boolean =>
   state.search.noResults;
+export const getCurrentPage = (state: RootState): number =>
+  state.search.currentPage;
 
 // action creators
 export const updateKeyword = (keyword: string): SearchAction => ({
@@ -108,17 +135,39 @@ export const updateKeyword = (keyword: string): SearchAction => ({
 
 export const searchKeyword = (
   keyword: string,
+  page = 1,
 ): ThunkAction<void, RootState, unknown, Action<string>> => async dispatch => {
   try {
     dispatch({ type: SEARCH_KEYWORD, payload: true });
-    const response = await getCollection(keyword);
+    const response = await getCollection(keyword, page);
     const { count } = response;
-    count == 0
-      ? dispatch({
-          type: SEARCH_NO_RESULTS,
-          payload: { ...initialState, keyword },
-        })
-      : dispatch({ type: SEARCH_KEYWORD_SUCCESSFUL, payload: response });
+    const isInitialSearch = count > 0 && page === 1;
+    const hasNoResults = count === 0;
+    const hasMoreResults = count > 0 && !isInitialSearch;
+
+    if (isInitialSearch) {
+      dispatch({
+        type: SEARCH_KEYWORD_SUCCESSFUL,
+        payload: { results: response },
+      });
+    }
+
+    if (hasNoResults) {
+      dispatch({
+        type: SEARCH_NO_RESULTS,
+        payload: { ...initialState, keyword },
+      });
+    }
+
+    if (hasMoreResults) {
+      dispatch({
+        type: SEARCH_MORE_RESULTS_SUCCESSFUL,
+        payload: {
+          results: response,
+          currentPage: page,
+        },
+      });
+    }
   } catch (error) {
     console.error('Error searching...', error);
     dispatch({

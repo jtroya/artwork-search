@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { CollectionResponseProps, ArtObjectResponseProps } from '../../api';
+import { LoadMoreButton } from '../LoadMoreButton';
 
 interface GridImageListProps<T> {
   title?: string;
@@ -98,17 +99,23 @@ export const GridImageList: React.FC<
   const { artObjects, count } = data;
   const totalResults = count > 0 ? `${count} results` : '';
   const hasResults = count > 0;
+  const showMoreResults = count > 0 && count > 10 && count > artObjects.length;
 
   return (
     <div className="p-4">
       <h2 className="pb-4 text-lg tracking-wide">{totalResults}</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
-        {loading ? (
+        {loading && !showMoreResults ? (
           <CardSkeleton items={10} />
         ) : (
           hasResults && <CardList list={artObjects} />
         )}
       </div>
+      {showMoreResults && (
+        <div className="block text-center mt-4">
+          <LoadMoreButton />
+        </div>
+      )}
     </div>
   );
 };
