@@ -14,7 +14,7 @@ export const Table: React.FC<TableProps<CollectionResponseProps>> = ({
   headers,
   data,
   title,
-}: TableProps<CollectionResponseProps>) => {
+}) => {
   return (
     <table className="w-full table-fixed border-collapse border-green-800">
       <caption>

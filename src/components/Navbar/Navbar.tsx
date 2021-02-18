@@ -12,10 +12,7 @@ export interface NavbarProps {
   handleClick?: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({
-  items,
-  handleClick,
-}: NavbarProps) => {
+export const Navbar: React.FC<NavbarProps> = ({ items, handleClick }) => {
   return (
     <React.Fragment>
       <nav className="md:ml-auto md:pr-2 lg:ml-auto">
