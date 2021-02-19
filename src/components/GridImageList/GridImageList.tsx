@@ -20,7 +20,7 @@ interface SkeletonProps {
   items: number;
 }
 
-const CardSkeleton = ({ items }: SkeletonProps) => {
+const CardSkeleton: React.FC<SkeletonProps> = ({ items }) => {
   const cards = new Array(items).fill(null);
   return (
     <React.Fragment>
@@ -43,7 +43,9 @@ const CardSkeleton = ({ items }: SkeletonProps) => {
   );
 };
 
-const CardList = ({ list }: CardListProps<ArtObjectResponseProps>) => {
+const CardList: React.FC<CardListProps<ArtObjectResponseProps>> = ({
+  list,
+}) => {
   return (
     <React.Fragment>
       {list.map(el => (
@@ -92,10 +94,7 @@ const CardList = ({ list }: CardListProps<ArtObjectResponseProps>) => {
 
 export const GridImageList: React.FC<
   GridImageListProps<CollectionResponseProps>
-> = ({
-  data,
-  loading = false,
-}: GridImageListProps<CollectionResponseProps>) => {
+> = ({ data, loading = false }) => {
   const { artObjects, count } = data;
   const totalResults = count > 0 ? `${count} results` : '';
   const hasResults = count > 0;

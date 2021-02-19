@@ -53,7 +53,7 @@ const NoResultsLayout = () => {
 
 export const ListResults: React.FC<ListResultsProps> = ({
   viewStyle = ViewStyles.Grid,
-}: ListResultsProps) => {
+}) => {
   const TITLE = 'Artwork';
   const HEADER_TITLES = [
     { id: 1, name: 'Title' },
