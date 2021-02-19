@@ -3,6 +3,7 @@ import React from 'react';
 export const CloseIcon: React.FC = () => {
   return (
     <svg
+      id="close-icon"
       className="fill-current"
       fill="currentColor"
       viewBox="0 0 20 20"
