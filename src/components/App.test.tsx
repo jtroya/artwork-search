@@ -1,19 +1,20 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { Provider } from 'react-redux';
+import { screen, cleanup } from '@testing-library/react';
 
+import { render } from '../test-utils';
 import App from './App';
-import { store } from '../store';
 
-test('renders learn react link', () => {
-  render(
-    <Provider store={store}>
-      <App />
-    </Provider>,
-  );
-  const title = screen.getByText(/artwork/i);
-  const about = screen.getByText(/about/i);
+afterEach(cleanup);
 
-  expect(title).toBeInTheDocument();
-  expect(about).toBeInTheDocument();
+describe('App component', () => {
+  test('renders App', () => {
+    render(<App />);
+    const title = screen.getByText(/artwork/i);
+    const about = screen.getByText(/about/i);
+    const footer = screen.getByText(/footer/i);
+
+    expect(title).toBeInTheDocument();
+    expect(about).toBeInTheDocument();
+    expect(footer).toBeInTheDocument();
+  });
 });
