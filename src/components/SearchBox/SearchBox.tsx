@@ -26,6 +26,7 @@ export const SearchBox: React.FC = () => {
     <div>
       <form onSubmit={handleSearch} className="flex items-center justify-items">
         <input
+          data-testid="search-input"
           type="search"
           className="w-5/6 h-7 px-1 bg-gray-100 border-b border-blue-200 outline-none mr-1 text-sm"
           placeholder="Search"
@@ -33,6 +34,7 @@ export const SearchBox: React.FC = () => {
           onChange={handleOnChange}
         />
         <button
+          data-testid="submit-search"
           type="submit"
           className="w-7 p-1 bg-blue-300 rounded text-white focus:outline-none hover:opacity-75"
           disabled={isDisable}
