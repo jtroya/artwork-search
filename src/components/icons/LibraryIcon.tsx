@@ -3,6 +3,7 @@ import React from 'react';
 export const LibraryIcon: React.FC = () => {
   return (
     <svg
+      data-testid="library-icon"
       className="fill-current"
       fill="currentColor"
       viewBox="0 0 20 20"
