@@ -7,11 +7,11 @@ import { Header } from './Header';
 afterEach(cleanup);
 
 describe('Header component', () => {
-  test('Header component', () => {
+  test('render Header component', () => {
     render(<Header />);
     const title = screen.getByText(/artwork/i);
     const button = screen.getByRole('button');
-    const menuIcon = document.querySelector('#menu-icon');
+    const menuIcon = screen.getByTestId('menu-icon');
     expect(title).toBeInTheDocument();
     expect(menuIcon).toBeTruthy();
     fireEvent.click(button);
