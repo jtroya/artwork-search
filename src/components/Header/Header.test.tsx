@@ -15,7 +15,7 @@ describe('Header component', () => {
     expect(title).toBeInTheDocument();
     expect(menuIcon).toBeTruthy();
     fireEvent.click(button);
-    const closeIcon = document.querySelector('#close-icon');
+    const closeIcon = screen.getByTestId('close-icon');
     expect(closeIcon).toBeTruthy();
   });
 });
