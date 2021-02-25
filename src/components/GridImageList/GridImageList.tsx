@@ -1,6 +1,8 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 import { CollectionResponseProps, ArtObjectResponseProps } from '../../api';
+import { getCurrentPage, getKeyword, getLoading } from '../../store/search';
 import { LoadMoreButton } from '../LoadMoreButton';
 
 interface GridImageListProps<T> {
@@ -20,12 +22,16 @@ interface SkeletonProps {
   items: number;
 }
 
-const CardSkeleton = ({ items }: SkeletonProps) => {
+const CardSkeleton: React.FC<SkeletonProps> = ({ items = 1 }) => {
   const cards = new Array(items).fill(null);
   return (
     <React.Fragment>
       {cards.map((_, index: number) => (
-        <div key={index} className="rounded bg-white shadow">
+        <div
+          key={index}
+          className="rounded bg-white shadow"
+          data-testid={`card-skeleton-${index}`}
+        >
           <section className="p-4">
             <div className="relative aspect-w-16 aspect-h-9 animate-pulse">
               <div className="absolute object-cover h-full w-full bg-gray-300 rounded"></div>
@@ -43,11 +49,17 @@ const CardSkeleton = ({ items }: SkeletonProps) => {
   );
 };
 
-const CardList = ({ list }: CardListProps<ArtObjectResponseProps>) => {
+const CardList: React.FC<CardListProps<ArtObjectResponseProps>> = ({
+  list,
+}) => {
   return (
     <React.Fragment>
       {list.map(el => (
-        <div key={el.id} className="rounded bg-white shadow">
+        <div
+          key={el.id}
+          className="rounded bg-white shadow"
+          data-testid="card-list-item"
+        >
           <section className="p-4">
             <div className="relative aspect-w-16 aspect-h-9">
               {el.hasImage && (
@@ -55,6 +67,7 @@ const CardList = ({ list }: CardListProps<ArtObjectResponseProps>) => {
                   src={el.headerImage.url}
                   alt={el.title}
                   className="absolute object-cover h-full w-full rounded"
+                  data-testid={el.id}
                 />
               )}
               {!el.hasImage && (
@@ -64,6 +77,7 @@ const CardList = ({ list }: CardListProps<ArtObjectResponseProps>) => {
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
+                    data-testid="image-placeholder"
                   >
                     <path
                       fillRule="evenodd"
@@ -92,10 +106,10 @@ const CardList = ({ list }: CardListProps<ArtObjectResponseProps>) => {
 
 export const GridImageList: React.FC<
   GridImageListProps<CollectionResponseProps>
-> = ({
-  data,
-  loading = false,
-}: GridImageListProps<CollectionResponseProps>) => {
+> = ({ data, loading = false }) => {
+  const currentPage = useSelector(getCurrentPage);
+  const keyword = useSelector(getKeyword);
+  const isLoading = useSelector(getLoading);
   const { artObjects, count } = data;
   const totalResults = count > 0 ? `${count} results` : '';
   const hasResults = count > 0;
@@ -113,7 +127,11 @@ export const GridImageList: React.FC<
       </div>
       {showMoreResults && (
         <div className="block text-center mt-4">
-          <LoadMoreButton />
+          <LoadMoreButton
+            page={currentPage}
+            keyword={keyword}
+            isLoading={isLoading}
+          />
         </div>
       )}
     </div>

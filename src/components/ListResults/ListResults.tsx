@@ -53,7 +53,7 @@ const NoResultsLayout = () => {
 
 export const ListResults: React.FC<ListResultsProps> = ({
   viewStyle = ViewStyles.Grid,
-}: ListResultsProps) => {
+}) => {
   const TITLE = 'Artwork';
   const HEADER_TITLES = [
     { id: 1, name: 'Title' },
@@ -65,7 +65,7 @@ export const ListResults: React.FC<ListResultsProps> = ({
   const hasNoResults = useSelector(getNoResults);
 
   return (
-    <div className="w-full pb-4 sm:px-4">
+    <div data-testid="list-results" className="w-full pb-4 sm:px-4">
       {viewStyle === ViewStyles.Table &&
         (hasNoResults ? (
           <NoResultsLayout />

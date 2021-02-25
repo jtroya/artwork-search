@@ -4,7 +4,7 @@ import logger from 'redux-logger';
 
 import { searchReducer } from './search';
 
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
   search: searchReducer,
 });
 let middlewares = applyMiddleware(thunk);

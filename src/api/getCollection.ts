@@ -6,7 +6,7 @@ export interface ArtObjectResponseProps {
     guid: string;
     height: number;
     url: string;
-    width: string;
+    width: number;
   };
   id: string;
   longTitle: string;

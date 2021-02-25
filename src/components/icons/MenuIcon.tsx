@@ -7,6 +7,7 @@ interface MenuIconProps {
 export const MenuIcon: React.FC<MenuIconProps> = () => {
   return (
     <svg
+      data-testid="menu-icon"
       className="fill-current"
       fill="none"
       stroke="currentColor"
