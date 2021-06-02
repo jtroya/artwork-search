@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 
 import { MenuIcon, CloseIcon } from '../icons';
 import { Navbar, NavItemProps } from '../Navbar';
+import { ABOUT } from '../../routes';
 
 export const Header: React.FC = () => {
   const [isClosed, setClosed] = React.useState(true);
@@ -11,12 +12,7 @@ export const Header: React.FC = () => {
     {
       id: 'about',
       name: 'About',
-      link: '/about',
-    },
-    {
-      id: 'login',
-      name: 'Login',
-      link: '/',
+      link: ABOUT,
     },
   ];
 

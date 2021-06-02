@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { ListResults } from '../ListResults';
-import { SearchBox } from '../SearchBox';
+import { ListResults } from '../../components/ListResults';
+import { SearchBox } from '../../components/SearchBox';
 
 export const SearchPage: React.FC = () => {
   return (
