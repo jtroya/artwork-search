@@ -5,7 +5,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:react-hooks/recommended',
     'prettier/@typescript-eslint',
-    'plugin:prettier/recommended',
+    //'plugin:prettier/recommended',
   ],
   parserOptions: {
     ecmaVersion: 2020,

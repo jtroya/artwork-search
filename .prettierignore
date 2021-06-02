@@ -2,6 +2,6 @@
 tsconfig.json
 package*.json
 reportWebVitals.ts
-styles.css
+src/styles.css
 build
 public
