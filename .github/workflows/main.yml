@@ -1,4 +1,4 @@
-name: Frontend Artwork CI/CD
+name: Frontend-Artwork-CI-CD
   
   on:
     push:
