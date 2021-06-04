@@ -10,12 +10,15 @@ on:
 jobs:
   ci:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
     container:
       image: node
 
     steps:
       - uses: actions/checkout@v1
-      - name: Install & Tests
+      - name: Install & Tests- Using NodeJS ${{ matrix.node-version }}
         run: |
           npm ci
           npm test
