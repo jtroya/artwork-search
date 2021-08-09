@@ -1,6 +1,6 @@
 {
   "name": "artwork-search",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "dependencies": {
     "@tailwindcss/aspect-ratio": "^0.2.0",
