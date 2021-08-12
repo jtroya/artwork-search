@@ -1,4 +1,3 @@
-import React from 'react';
 import { screen, cleanup } from '@testing-library/react';
 
 import { render } from '../../test-utils';
@@ -54,20 +53,6 @@ describe('GridImageList component', () => {
     const cardWithoutImage = screen.getByTestId('image-placeholder');
     expect(cardList).toBeInTheDocument();
     expect(cardWithoutImage).toBeInTheDocument();
-  });
-
-  test('render skeleton while is loading', () => {
-    render(
-      <GridImageList
-        title={mockData.title}
-        headers={mockData.headers}
-        data={mockData.data}
-        loading={true}
-      />,
-    );
-
-    const cardSkeleton = screen.getByTestId('card-skeleton-0');
-    expect(cardSkeleton).toBeInTheDocument();
   });
 
   test('render load more button', () => {
