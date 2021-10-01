@@ -5,16 +5,25 @@ import { MenuIcon, CloseIcon } from '../icons';
 import { Navbar, NavItemProps } from '../Navbar';
 import { ABOUT } from '../../routes';
 
-export const Header: React.FC = () => {
+interface HeaderProps {
+  appName?: string;
+  menuItems?: NavItemProps[];
+}
+
+const defaultMenuItems: NavItemProps[] = [
+  {
+    id: 'about',
+    name: 'About',
+    link: ABOUT,
+  },
+];
+
+export const Header: React.VFC<HeaderProps> = ({
+  menuItems = defaultMenuItems,
+  appName = 'Artwork',
+}) => {
   const [isClosed, setClosed] = React.useState(true);
   const handleClose = () => setClosed(!isClosed);
-  const navbarItems: NavItemProps[] = [
-    {
-      id: 'about',
-      name: 'About',
-      link: ABOUT,
-    },
-  ];
 
   return (
     <header className="flex bg-blue-200">
@@ -24,7 +33,7 @@ export const Header: React.FC = () => {
             className="text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-no-wrap uppercase text-white"
             to="/"
           >
-            <span className="text-white text-m pt-1">Artwork</span>
+            <span className="text-white text-m pt-1">{appName}</span>
           </NavLink>
           <button
             className="w-7 p-0 mr-3 text-blue-100 cursor-pointer leading-none focus:outline-none block md:hidden"
@@ -42,7 +51,7 @@ export const Header: React.FC = () => {
             'md:flex flex-grow items-center' + (isClosed ? ' hidden' : 'flex')
           }
         >
-          <Navbar items={navbarItems} handleClick={handleClose} />
+          <Navbar items={menuItems} handleClick={handleClose} />
         </div>
       </div>
     </header>

@@ -14,7 +14,7 @@ export const Card: React.FC<CardProps> = ({
   description,
 }: CardProps) => {
   return (
-    <section className="p-4">
+    <section className="p-4 rounded bg-white ">
       <div className="relative aspect-w-16 aspect-h-9">
         {imgUrl && (
           <img
