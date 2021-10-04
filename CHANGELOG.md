@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.4](https://github.com/jtroya/artwork-search/compare/v0.1.3...v0.1.4) (2021-10-04)
+
+
+### Features
+
+* add stories for basic components ([c7aa4a8](https://github.com/jtroya/artwork-search/commit/c7aa4a882acff9385c93ca37ce0c879ec266abb7))
+* enable styles for Tailwind ([472d891](https://github.com/jtroya/artwork-search/commit/472d8910c2b4a9c2b1cb4ecc0d788840d696ba45))
+* install Storybook ([c85bf4e](https://github.com/jtroya/artwork-search/commit/c85bf4edbc6068fbd9e7333e957fcc69716a0edc))
+* update Storybook stories ([f1f30c9](https://github.com/jtroya/artwork-search/commit/f1f30c904b4abd17ea75359f86e403e8a5307fea))
+
 ### [0.1.3](https://github.com/jtroya/artwork-search/compare/v0.1.2...v0.1.3) (2021-08-26)
 
 ### 0.1.2 (2021-08-09)
