@@ -5,7 +5,7 @@ import { Card } from './Card';
 import { store } from '../../store';
 
 export default {
-  title: 'Card',
+  title: 'Components/Card',
   component: Card,
   decorators: [story => <Provider store={store}>{story()}</Provider>],
 } as ComponentMeta<typeof Card>;

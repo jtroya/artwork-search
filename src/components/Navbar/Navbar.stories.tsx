@@ -2,12 +2,12 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { MemoryRouter } from 'react-router';
 import { Provider } from 'react-redux';
 
-import { Navbar } from './Navbar';
+import { Navbar as NavbarComponent } from './Navbar';
 import { store } from '../../store';
 
 export default {
-  title: 'Navigation bar',
-  component: Navbar,
+  title: 'Components/Navbar',
+  component: NavbarComponent,
   argTypes: {
     items: [],
   },
@@ -15,18 +15,18 @@ export default {
     story => <Provider store={store}>{story()}</Provider>,
     story => <MemoryRouter>{story()}</MemoryRouter>,
   ],
-} as ComponentMeta<typeof Navbar>;
+} as ComponentMeta<typeof NavbarComponent>;
 
-const Template: ComponentStory<typeof Navbar> = args => (
+const Template: ComponentStory<typeof NavbarComponent> = args => (
   <div className="flex bg-blue-200">
     <div className="w-full flex flex-wrap items-center justify-between">
-      <Navbar {...args} />
+      <NavbarComponent {...args} />
     </div>
   </div>
 );
 
-export const Default = Template.bind({});
-Default.args = {
+export const Navbar = Template.bind({});
+Navbar.args = {
   items: [
     {
       id: '1',

@@ -1,20 +1,20 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { Provider } from 'react-redux';
 
-import { SearchBox } from './SearchBox';
+import { SearchBox as SearchComponent } from './SearchBox';
 import { store } from '../../store';
 
 export default {
-  title: 'Search box',
-  component: SearchBox,
+  title: 'Components/Searchbox',
+  component: SearchComponent,
   decorators: [story => <Provider store={store}>{story()}</Provider>],
-} as ComponentMeta<typeof SearchBox>;
+} as ComponentMeta<typeof SearchComponent>;
 
-const Template: ComponentStory<typeof SearchBox> = args => (
-  <SearchBox {...args} />
+const Template: ComponentStory<typeof SearchComponent> = args => (
+  <SearchComponent {...args} />
 );
 
-export const Default = Template.bind({});
-Default.args = {
+export const Searchbox = Template.bind({});
+Searchbox.args = {
   placeholder: 'Enter a term',
 };

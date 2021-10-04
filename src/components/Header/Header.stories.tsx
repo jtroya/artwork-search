@@ -2,12 +2,12 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
-import { Header } from './Header';
+import { Header as HeaderComponent } from './Header';
 import { store } from '../../store';
 
 export default {
-  title: 'Header',
-  component: Header,
+  title: 'Components/Header',
+  component: HeaderComponent,
   argTypes: {
     menuItems: [],
   },
@@ -15,12 +15,14 @@ export default {
     story => <Provider store={store}>{story()}</Provider>,
     story => <MemoryRouter>{story()}</MemoryRouter>,
   ],
-} as ComponentMeta<typeof Header>;
+} as ComponentMeta<typeof HeaderComponent>;
 
-const Template: ComponentStory<typeof Header> = args => <Header {...args} />;
+const Template: ComponentStory<typeof HeaderComponent> = args => (
+  <HeaderComponent {...args} />
+);
 
-export const Default = Template.bind({});
-Default.args = {
+export const Header = Template.bind({});
+Header.args = {
   appName: 'Artwork',
   menuItems: [
     {
