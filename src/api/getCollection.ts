@@ -62,7 +62,8 @@ export const getCollection = (
       return result;
     })
     .then(r => r)
-    .catch(error =>
-      console.error('Error calling service', error),
-    ) as Promise<CollectionResponseProps>;
+    .catch(error => {
+      console.error('Error calling service', error);
+      return Promise.reject('Error calling service');
+    }) as Promise<CollectionResponseProps>;
 };
