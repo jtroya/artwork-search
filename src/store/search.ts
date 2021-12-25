@@ -10,6 +10,10 @@ export interface SearchState {
   noResults: boolean;
   loading: boolean;
   currentPage: number;
+  error: {
+    state: boolean;
+    message: string;
+  };
 }
 
 // actions
@@ -51,6 +55,10 @@ export const initialState: SearchState = {
   noResults: false,
   loading: false,
   currentPage: 0,
+  error: {
+    state: false,
+    message: '',
+  },
 };
 
 // action types
@@ -133,48 +141,50 @@ export const updateKeyword = (keyword: string): SearchAction => ({
   payload: keyword,
 });
 
-export const searchKeyword = (
-  keyword: string,
-  page = 1,
-): ThunkAction<void, RootState, unknown, Action<string>> => async dispatch => {
-  try {
-    dispatch({ type: SEARCH_KEYWORD, payload: true });
-    const response = await getCollection(keyword, page);
-    const { count } = response;
-    const isInitialSearch = count > 0 && page === 1;
-    const hasNoResults = count === 0;
-    const hasMoreResults = count > 0 && !isInitialSearch;
+export const searchKeyword =
+  (
+    keyword: string,
+    page = 1,
+  ): ThunkAction<void, RootState, unknown, Action<string>> =>
+  async dispatch => {
+    try {
+      dispatch({ type: SEARCH_KEYWORD, payload: true });
+      const response = await getCollection(keyword, page);
+      const { count } = response;
+      const isInitialSearch = count > 0 && page === 1;
+      const hasNoResults = count === 0;
+      const hasMoreResults = count > 0 && !isInitialSearch;
 
-    if (isInitialSearch) {
-      dispatch({
-        type: SEARCH_KEYWORD_SUCCESSFUL,
-        payload: { results: response },
-      });
-    }
+      if (isInitialSearch) {
+        dispatch({
+          type: SEARCH_KEYWORD_SUCCESSFUL,
+          payload: { results: response },
+        });
+      }
 
-    if (hasNoResults) {
+      if (hasNoResults) {
+        dispatch({
+          type: SEARCH_NO_RESULTS,
+          payload: { ...initialState, keyword },
+        });
+      }
+
+      if (hasMoreResults) {
+        dispatch({
+          type: SEARCH_MORE_RESULTS_SUCCESSFUL,
+          payload: {
+            results: response,
+            currentPage: page,
+          },
+        });
+      }
+    } catch (error) {
+      console.error('Error searching...', error);
       dispatch({
-        type: SEARCH_NO_RESULTS,
+        type: SEARCH_ERROR,
         payload: { ...initialState, keyword },
       });
+    } finally {
+      dispatch({ type: SEARCH_KEYWORD, payload: false });
     }
-
-    if (hasMoreResults) {
-      dispatch({
-        type: SEARCH_MORE_RESULTS_SUCCESSFUL,
-        payload: {
-          results: response,
-          currentPage: page,
-        },
-      });
-    }
-  } catch (error) {
-    console.error('Error searching...', error);
-    dispatch({
-      type: SEARCH_ERROR,
-      payload: { ...initialState, keyword },
-    });
-  } finally {
-    dispatch({ type: SEARCH_KEYWORD, payload: false });
-  }
-};
+  };

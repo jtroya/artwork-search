@@ -1,14 +1,15 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { ErrorBoundary } from 'react-error-boundary';
 
-import {
-  getLoading,
-  getResults,
-  getNoResults,
-  getKeyword,
-} from '../../store/search';
+import { getNoResults, getKeyword } from '../../store/search';
 import { Table } from '../Table';
 import { GridImageList } from '../GridImageList';
+import {
+  getErrorSearch,
+  getLoading,
+  getResults,
+} from '../../store/searchSlice';
+import { useAppSelector } from '../../hooks';
 
 export enum ViewStyles {
   Table,
@@ -19,8 +20,8 @@ interface ListResultsProps {
 }
 
 const NoResultsLayout = () => {
-  const keyword = useSelector(getKeyword);
-  const isLoading = useSelector(getLoading);
+  const keyword = useAppSelector(getKeyword);
+  const isLoading = useAppSelector(getLoading);
 
   return (
     <React.Fragment>
@@ -51,7 +52,16 @@ const NoResultsLayout = () => {
   );
 };
 
-export const ListResults: React.FC<ListResultsProps> = ({
+function errorFallback(message: string): React.ReactElement {
+  return (
+    <div>
+      <h2>We have a problem</h2>
+      <pre>{message}</pre>
+    </div>
+  );
+}
+
+export const ListResults: React.FunctionComponent<ListResultsProps> = ({
   viewStyle = ViewStyles.Grid,
 }) => {
   const TITLE = 'Artwork';
@@ -60,29 +70,37 @@ export const ListResults: React.FC<ListResultsProps> = ({
     { id: 2, name: 'Artist' },
     { id: 3, name: 'Description' },
   ];
-  const results = useSelector(getResults);
-  const isLoading = useSelector(getLoading);
-  const hasNoResults = useSelector(getNoResults);
+  const results = useAppSelector(getResults);
+  const isLoading = useAppSelector(getLoading);
+  const hasNoResults = useAppSelector(getNoResults);
+
+  const isError = useAppSelector(state => state.search.error.state);
+  const getErrorMessage = useAppSelector(getErrorSearch);
+
+  React.useLayoutEffect(() => {
+    if (isError) {
+      console.log('Error', getErrorMessage);
+    }
+  }, [getErrorMessage, isError]);
 
   return (
     <div data-testid="list-results" className="w-full pb-4 sm:px-4">
-      {viewStyle === ViewStyles.Table &&
-        (hasNoResults ? (
-          <NoResultsLayout />
-        ) : (
+      {hasNoResults && <NoResultsLayout />}
+      {viewStyle === ViewStyles.Table && (
+        <ErrorBoundary fallback={errorFallback(getErrorMessage)}>
           <Table title={TITLE} headers={HEADER_TITLES} data={results} />
-        ))}
-      {viewStyle === ViewStyles.Grid &&
-        (hasNoResults ? (
-          <NoResultsLayout />
-        ) : (
+        </ErrorBoundary>
+      )}
+      {viewStyle === ViewStyles.Grid && (
+        <ErrorBoundary fallback={errorFallback(getErrorMessage)}>
           <GridImageList
             title={TITLE}
             headers={HEADER_TITLES}
             data={results}
             loading={isLoading}
           />
-        ))}
+        </ErrorBoundary>
+      )}
     </div>
   );
 };

@@ -1,10 +1,14 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 
 import { CollectionResponseProps } from '../../api';
-import { getCurrentPage, getKeyword, getLoading } from '../../store/search';
 import { LoadMoreButton } from '../LoadMoreButton';
 import { CardList, CardSkeleton } from '../Card';
+import { useAppSelector } from '../../hooks';
+import {
+  getKeyword,
+  getCurrentPage,
+  hasMoreResults,
+} from '../../store/searchSlice';
 
 export interface GridImageListProps<T> {
   title?: string;
@@ -18,13 +22,15 @@ export interface GridImageListProps<T> {
 export const GridImageList: React.FC<
   GridImageListProps<CollectionResponseProps>
 > = ({ data, loading = false }) => {
-  const currentPage = useSelector(getCurrentPage);
-  const keyword = useSelector(getKeyword);
-  const isLoading = useSelector(getLoading);
+  const currentPage = useAppSelector(getCurrentPage);
+  const keyword = useAppSelector(getKeyword);
+  const showMoreResults = useAppSelector(hasMoreResults);
+
   const { artObjects, count } = data;
   const totalResults = count > 0 ? `${count} results` : '';
   const hasResults = count > 0;
-  const showMoreResults = count > 0 && count > 10 && count > artObjects.length;
+  const showLoadMore = count > 0 && count > 10 && count > artObjects.length;
+  console.log(showLoadMore, 'length', artObjects.length, count);
 
   return (
     <div className="p-4">
@@ -36,13 +42,9 @@ export const GridImageList: React.FC<
           hasResults && <CardList list={artObjects} />
         )}
       </div>
-      {showMoreResults && (
+      {showLoadMore && (
         <div className="block text-center mt-4">
-          <LoadMoreButton
-            page={currentPage}
-            keyword={keyword}
-            isLoading={isLoading}
-          />
+          <LoadMoreButton page={currentPage} keyword={keyword} />
         </div>
       )}
     </div>
