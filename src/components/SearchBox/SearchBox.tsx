@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { SearchIcon, Spinner } from '../icons';
-import { getLoading } from '../../store/search';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { searchKeyword } from '../../store/searchSlice';
+import { searchKeyword, getKeyword, getLoading } from '../../store/searchSlice';
+
+import { SearchIcon, Spinner } from '../icons';
 
 interface SearchBoxProps {
   placeholder?: string;
@@ -12,7 +12,8 @@ interface SearchBoxProps {
 export const SearchBox: React.VFC<SearchBoxProps> = ({
   placeholder = 'Search',
 }) => {
-  const [keyword, setKeyword] = React.useState('');
+  const keywordStored = useAppSelector(getKeyword);
+  const [keyword, setKeyword] = React.useState(() => keywordStored || '');
   const showLoader = useAppSelector(getLoading);
   const dispatch = useAppDispatch();
   const isDisable = keyword.trim() === '' || keyword.length < 3;

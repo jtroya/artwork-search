@@ -4,11 +4,7 @@ import { CollectionResponseProps } from '../../api';
 import { LoadMoreButton } from '../LoadMoreButton';
 import { CardList, CardSkeleton } from '../Card';
 import { useAppSelector } from '../../hooks';
-import {
-  getKeyword,
-  getCurrentPage,
-  hasMoreResults,
-} from '../../store/searchSlice';
+import { getKeyword, getCurrentPage } from '../../store/searchSlice';
 
 export interface GridImageListProps<T> {
   title?: string;
@@ -24,13 +20,16 @@ export const GridImageList: React.FC<
 > = ({ data, loading = false }) => {
   const currentPage = useAppSelector(getCurrentPage);
   const keyword = useAppSelector(getKeyword);
-  const showMoreResults = useAppSelector(hasMoreResults);
 
   const { artObjects, count } = data;
   const totalResults = count > 0 ? `${count} results` : '';
   const hasResults = count > 0;
-  const showLoadMore = count > 0 && count > 10 && count > artObjects.length;
-  console.log(showLoadMore, 'length', artObjects.length, count);
+  const RESULTS_PER_PAGE = parseInt(
+    process.env.REACT_APP_RESULTS_PER_PAGE || '10',
+    10,
+  );
+  const showMoreResults =
+    count > 0 && count > RESULTS_PER_PAGE && count > artObjects.length;
 
   return (
     <div className="p-4">
@@ -42,9 +41,13 @@ export const GridImageList: React.FC<
           hasResults && <CardList list={artObjects} />
         )}
       </div>
-      {showLoadMore && (
+      {showMoreResults && (
         <div className="block text-center mt-4">
-          <LoadMoreButton page={currentPage} keyword={keyword} />
+          <LoadMoreButton
+            page={currentPage}
+            keyword={keyword}
+            isLoading={loading}
+          />
         </div>
       )}
     </div>

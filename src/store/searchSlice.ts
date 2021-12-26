@@ -3,13 +3,39 @@ import {
   createAsyncThunk,
   createSelector,
 } from '@reduxjs/toolkit';
-import { getCollection } from '../api';
 
-import { initialState } from './search';
+import { CollectionResponseProps, getCollection } from '../api';
 import { RootState } from './store';
 
+export interface SearchState {
+  keyword: string;
+  results: CollectionResponseProps;
+  noResults: boolean;
+  loading: boolean;
+  currentPage: number;
+  error: {
+    state: boolean;
+    message: string;
+  };
+}
+
+export const initialState: SearchState = {
+  keyword: '',
+  results: {
+    count: 0,
+    artObjects: [],
+  },
+  noResults: false,
+  loading: false,
+  currentPage: 0,
+  error: {
+    state: false,
+    message: '',
+  },
+};
+
 // Thunks
-const searchKeyword = createAsyncThunk(
+export const searchKeyword = createAsyncThunk(
   'search/fetchingKeyword',
   async ({ keyword, page = 1 }: { keyword: string; page: number }) => {
     const response = await getCollection(keyword, page);
@@ -21,11 +47,7 @@ const searchKeyword = createAsyncThunk(
 const searchSlice = createSlice({
   name: 'search',
   initialState,
-  reducers: {
-    resultsUpdated(state, action) {
-      return state;
-    },
-  },
+  reducers: {},
   extraReducers: builder => {
     builder.addCase(searchKeyword.pending, (state, action) => {
       state.loading = true;
@@ -43,31 +65,36 @@ const searchSlice = createSlice({
       }
 
       if (count > 0) {
-        state.results = action.payload.response;
+        if (action.meta.arg.page > 1) {
+          state.results.artObjects = state.results.artObjects.concat(
+            action.payload.response.artObjects,
+          );
+        } else {
+          state.results = action.payload.response;
+        }
+
         state.loading = false;
         state.noResults = false;
         state.currentPage = action.meta.arg.page;
       }
     });
     builder.addCase(searchKeyword.rejected, (state, action) => {
-      console.error('error', action.error.message);
+      console.error('Error searching.', action.error.message);
       state.loading = false;
       state.noResults = true;
-      state.results.count = 0;
-      state.results.artObjects = [];
       state.error.state = true;
-      state.error.message = action.error.message || '';
+      state.error.message = action.error.message || 'Unknown error';
     });
   },
 });
 
 // Selectors
-const getLoading = createSelector(
+export const getLoading = createSelector(
   (state: RootState) => state.search.loading,
   loading => loading,
 );
 
-const hasMoreResults = createSelector(
+export const hasMoreResults = createSelector(
   (state: RootState) => {
     const { count, artObjects } = state.search.results;
     const RESULTS_PER_PAGE = parseInt(
@@ -79,47 +106,29 @@ const hasMoreResults = createSelector(
   result => result,
 );
 
-const getKeyword = createSelector(
+export const getKeyword = createSelector(
   (state: RootState): string => state.search.keyword,
   keyword => keyword,
 );
 
-const getErrorSearch = createSelector(
+export const getErrorSearch = createSelector(
   (state: RootState) => state.search.error,
   error => (error.state ? error.message : ''),
 );
 
-const getCurrentPage = createSelector(
+export const getCurrentPage = createSelector(
   (state: RootState) => state.search.currentPage,
   page => page,
 );
 
-const getResults = createSelector(
+export const getResults = createSelector(
   (state: RootState) => state.search.results,
   results => results,
 );
 
-// const hasToDisplayPagination = createSelector(
-//   (state: RootState) => {
-//     const { results, currentPage } = state.search;
-//     return results.count > 0 && currentPage === 1
-//   },
-//   (result) => {
-//     if (result) {
+export const getNoResults = createSelector(
+  (state: RootState) => state.search.noResults,
+  noResult => noResult,
+);
 
-//     }
-//   }
-// )
-
-export {
-  getKeyword,
-  getErrorSearch,
-  searchKeyword,
-  hasMoreResults,
-  getLoading,
-  getCurrentPage,
-  getResults,
-};
-
-export const { resultsUpdated } = searchSlice.actions;
 export default searchSlice.reducer;

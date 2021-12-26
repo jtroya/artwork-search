@@ -1,15 +1,15 @@
 import React from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
 
-import { getNoResults, getKeyword } from '../../store/search';
-import { Table } from '../Table';
-import { GridImageList } from '../GridImageList';
+import { useAppSelector } from '../../hooks';
 import {
-  getErrorSearch,
   getLoading,
   getResults,
+  getNoResults,
+  getKeyword,
 } from '../../store/searchSlice';
-import { useAppSelector } from '../../hooks';
+
+import { Table } from '../Table';
+import { GridImageList } from '../GridImageList';
 
 export enum ViewStyles {
   Table,
@@ -52,15 +52,6 @@ const NoResultsLayout = () => {
   );
 };
 
-function errorFallback(message: string): React.ReactElement {
-  return (
-    <div>
-      <h2>We have a problem</h2>
-      <pre>{message}</pre>
-    </div>
-  );
-}
-
 export const ListResults: React.FunctionComponent<ListResultsProps> = ({
   viewStyle = ViewStyles.Grid,
 }) => {
@@ -73,33 +64,21 @@ export const ListResults: React.FunctionComponent<ListResultsProps> = ({
   const results = useAppSelector(getResults);
   const isLoading = useAppSelector(getLoading);
   const hasNoResults = useAppSelector(getNoResults);
-
   const isError = useAppSelector(state => state.search.error.state);
-  const getErrorMessage = useAppSelector(getErrorSearch);
-
-  React.useLayoutEffect(() => {
-    if (isError) {
-      console.log('Error', getErrorMessage);
-    }
-  }, [getErrorMessage, isError]);
 
   return (
     <div data-testid="list-results" className="w-full pb-4 sm:px-4">
-      {hasNoResults && <NoResultsLayout />}
+      {hasNoResults && !isError && <NoResultsLayout />}
       {viewStyle === ViewStyles.Table && (
-        <ErrorBoundary fallback={errorFallback(getErrorMessage)}>
-          <Table title={TITLE} headers={HEADER_TITLES} data={results} />
-        </ErrorBoundary>
+        <Table title={TITLE} headers={HEADER_TITLES} data={results} />
       )}
       {viewStyle === ViewStyles.Grid && (
-        <ErrorBoundary fallback={errorFallback(getErrorMessage)}>
-          <GridImageList
-            title={TITLE}
-            headers={HEADER_TITLES}
-            data={results}
-            loading={isLoading}
-          />
-        </ErrorBoundary>
+        <GridImageList
+          title={TITLE}
+          headers={HEADER_TITLES}
+          data={results}
+          loading={isLoading}
+        />
       )}
     </div>
   );
