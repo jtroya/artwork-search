@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.4](https://github.com/jtroya/artwork-search/compare/v0.1.3...v0.1.4) (2021-12-26)
+
+
+### Features
+
+* add Redux toolkit ([#14](https://github.com/jtroya/artwork-search/issues/14)) ([fbc90de](https://github.com/jtroya/artwork-search/commit/fbc90de9803da9d19a90f5e2128ab4b6bbcb1bc3))
+* add Story book ([#13](https://github.com/jtroya/artwork-search/issues/13)) ([1bff5f4](https://github.com/jtroya/artwork-search/commit/1bff5f4f133efa68465f71b75660c29ba10531a1))
+
 ### [0.1.3](https://github.com/jtroya/artwork-search/compare/v0.1.2...v0.1.3) (2021-08-26)
 
 ### 0.1.2 (2021-08-09)
