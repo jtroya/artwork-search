@@ -1,8 +1,9 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { searchKeyword, getKeyword, getLoading } from '../../store/searchSlice';
 
 import { SearchIcon, Spinner } from '../icons';
-import { getLoading, updateKeyword, searchKeyword } from '../../store/search';
 
 interface SearchBoxProps {
   placeholder?: string;
@@ -11,9 +12,10 @@ interface SearchBoxProps {
 export const SearchBox: React.VFC<SearchBoxProps> = ({
   placeholder = 'Search',
 }) => {
-  const [keyword, setKeyword] = React.useState('');
-  const showLoader = useSelector(getLoading);
-  const dispatch = useDispatch();
+  const keywordStored = useAppSelector(getKeyword);
+  const [keyword, setKeyword] = React.useState(() => keywordStored || '');
+  const showLoader = useAppSelector(getLoading);
+  const dispatch = useAppDispatch();
   const isDisable = keyword.trim() === '' || keyword.length < 3;
 
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -23,8 +25,7 @@ export const SearchBox: React.VFC<SearchBoxProps> = ({
   const handleSearch = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
     if (keyword !== '' && keyword.length >= 3) {
-      dispatch(updateKeyword(keyword));
-      dispatch(searchKeyword(keyword));
+      dispatch(searchKeyword({ keyword, page: 1 }));
     }
   };
 

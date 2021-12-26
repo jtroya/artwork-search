@@ -1,17 +1,12 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-import logger from 'redux-logger';
+import { configureStore } from '@reduxjs/toolkit';
 
-import { searchReducer } from './search';
+import searchSliceReducer from './searchSlice';
 
-export const rootReducer = combineReducers({
-  search: searchReducer,
+export const store = configureStore({
+  reducer: {
+    search: searchSliceReducer,
+  },
 });
-let middlewares = applyMiddleware(thunk);
 
-if (process.env.NODE_ENV === 'development') {
-  middlewares = Object.assign(applyMiddleware(thunk, logger));
-}
-
-export type RootState = ReturnType<typeof rootReducer>;
-export const store = createStore(rootReducer, middlewares);
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

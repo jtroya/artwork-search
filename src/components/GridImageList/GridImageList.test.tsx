@@ -1,11 +1,12 @@
 import { screen, cleanup } from '@testing-library/react';
+import { nanoid } from '@reduxjs/toolkit';
 
 import { render } from '../../test-utils';
 import { GridImageList } from './GridImageList';
 
-afterEach(cleanup);
-
 describe('GridImageList component', () => {
+  afterEach(cleanup);
+
   const mockData = {
     title: 'test title',
     headers: [
@@ -56,7 +57,17 @@ describe('GridImageList component', () => {
   });
 
   test('render load more button', () => {
-    const mockDataMore = { ...mockData, data: { ...mockData.data, count: 12 } };
+    const getRandomId = () => nanoid(5);
+    const randomData = [];
+    for (let index = 0; index < 12; index++) {
+      randomData.push({ ...mockData.data.artObjects[0], id: getRandomId() });
+    }
+
+    const mockDataMore = {
+      ...mockData,
+      data: { artObjects: [...randomData], count: randomData.length + 10 },
+    };
+
     render(
       <GridImageList
         title={mockData.title}
